@@ -1,6 +1,6 @@
 workspace "PotatoTiler"
 	architecture "x64"
-	startproject "MeowApplication"
+	startproject "PotatoTiler"
 
 	configurations
 	{
@@ -9,6 +9,11 @@ workspace "PotatoTiler"
 	}
 
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
+
+include "Dependencies/GLFW"
+
+IncludeDirs = {}
+IncludeDirs["GLFW"] = "Dependencies/GLFW/include"
 
 project "PotatoTiler"
 	location "PotatoTiler"
@@ -23,9 +28,14 @@ project "PotatoTiler"
 	objdir ("intermediate/" .. outputdir .. "/%{prj.name}")
 
 	includedirs {
-		"%{prj.name}/src/"
+		"%{prj.name}/src/",
+		"%{IncludeDirs.GLFW}"
 	}
 
+	links {
+		"GLFW",
+		"opengl32"
+	}
 
 	files { 
 		"%{prj.name}/src/**.h", 
