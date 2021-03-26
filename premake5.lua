@@ -11,9 +11,11 @@ workspace "PotatoTiler"
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
 include "Dependencies/GLFW"
+include "Dependencies/GLAD"
 
 IncludeDirs = {}
 IncludeDirs["GLFW"] = "Dependencies/GLFW/include"
+IncludeDirs["GLAD"] = "Dependencies/GLAD/include"
 
 project "PotatoTiler"
 	location "PotatoTiler"
@@ -29,12 +31,13 @@ project "PotatoTiler"
 
 	includedirs {
 		"%{prj.name}/src/",
-		"%{IncludeDirs.GLFW}"
+		"%{IncludeDirs.GLFW}",
+		"%{IncludeDirs.GLAD}"
 	}
 
 	links {
 		"GLFW",
-		"opengl32"
+		"GLAD"
 	}
 
 	files { 
