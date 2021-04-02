@@ -8,22 +8,38 @@ int main(int argc, char* argv[]) {
     Node root;
     //root = (Node*)malloc(sizeof(Node));
     init_tree(&root);
+    root.name = "root";
+    root.first_child = NULL;
+    root.left_sibling = NULL;
+    root.right_sibling = NULL;
+    root.parent = NULL;
     Data data;
-    data.child_name = "Shit";
-    data.child_type = 1;
     printf("Code Started\n");
     char path_node[256];
+    data.child_name = "new";
+    data.child_type = 1;
+
+    printf("%s\n\n", root.name);
+
     strcpy(path_node, "root");
-    //insert_node(root, path_node, data);
-    data.child_name = "Shitter";
-    data.child_type = 2;
-    insert_node(&root, "root", data);
+    insert_node(&root, path_node, data);
+    print_tree(&root);
+
     strcpy(path_node, "/root/new");
-    insert_node(&root, path_node, data);    
+    insert_node(&root, path_node, data);
+    print_tree(&root);
+
     strcpy(path_node, "/root/old");
     insert_node(&root, path_node, data);
+    print_tree(&root);
 
-
+    strcpy(path_node, "/root/new/newshit");
+    insert_node(&root, path_node, data);
+    print_tree(&root);
+    
+    strcpy(path_node, "/root/old/shit");
+    insert_node(&root, path_node, data);
+    print_tree(&root);
 
     return 0;
 }
