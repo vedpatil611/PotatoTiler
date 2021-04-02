@@ -1,6 +1,33 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include "../../SceneTree/src/Tree.h"
 
+int main(int argc, char* argv[]) {
+    Node root;
+    //root = (Node*)malloc(sizeof(Node));
+    init_tree(&root);
+    Data data;
+    data.child_name = "Shit";
+    data.child_type = 1;
+    printf("Code Started\n");
+    char path_node[256];
+    strcpy(path_node, "root");
+    //insert_node(root, path_node, data);
+    data.child_name = "Shitter";
+    data.child_type = 2;
+    insert_node(&root, "root", data);
+    strcpy(path_node, "/root/new");
+    insert_node(&root, path_node, data);    
+    strcpy(path_node, "/root/old");
+    insert_node(&root, path_node, data);
+
+
+
+    return 0;
+}
+/*
 int main()
 {
     GLFWwindow* window;
@@ -46,3 +73,4 @@ int main()
     glfwTerminate();
     return 0;
 }
+*/
