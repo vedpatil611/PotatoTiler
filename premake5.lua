@@ -16,6 +16,7 @@ include "Dependencies/GLAD"
 IncludeDirs = {}
 IncludeDirs["GLFW"] = "Dependencies/GLFW/include"
 IncludeDirs["GLAD"] = "Dependencies/GLAD/include"
+IncludeDirs["GLM"] = "Dependencies/glm"
 IncludeDirs["SceneTree"] = "SceneTree/src"
 
 project "PotatoTiler"
@@ -33,7 +34,8 @@ project "PotatoTiler"
 	includedirs {
 		"%{prj.name}/src/",
 		"%{IncludeDirs.GLFW}",
-		"%{IncludeDirs.GLAD}"
+		"%{IncludeDirs.GLAD}",
+		"%{IncludeDirs.GLM}"
 	}
 
 	links {
@@ -77,6 +79,7 @@ project "SceneTree"
 
 	includedirs {
 		"%{prj.name}/src/",
+		"%{IncludeDirs.GLM}"
 	}
 
 	files { 
