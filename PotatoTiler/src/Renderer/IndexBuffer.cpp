@@ -3,6 +3,7 @@
 #include <glad/glad.h>
 
 IndexBuffer::IndexBuffer(unsigned short* indicies, unsigned int count)
+	:m_Count(count)
 {
 	glGenBuffers(1, &m_BufferID);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_BufferID);

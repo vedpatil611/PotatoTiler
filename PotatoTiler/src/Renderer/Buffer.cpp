@@ -3,6 +3,7 @@
 #include <glad/glad.h>
 
 Buffer::Buffer(const void* data, unsigned int count)
+	:m_Count(count)
 {
 	glGenBuffers(1, &m_BufferID);
 	glBindBuffer(GL_ARRAY_BUFFER, m_BufferID);
