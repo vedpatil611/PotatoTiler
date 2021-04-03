@@ -13,7 +13,7 @@ public:
 
 class Node {
 public:
-    char* name;
+    char name[256];
     Data data;
     Node* first_child;
     Node* parent;	// could be calculate so might not be needed
@@ -22,7 +22,6 @@ public:
 };
 
 
-void init_tree(Node* root);
 Node* insert_node(Node* root, char* path_given, Data data);
 int tokenize_path(char** path, char* path_dir, const char* delimiter);
 void print_tree(Node* root);

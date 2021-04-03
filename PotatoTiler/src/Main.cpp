@@ -26,31 +26,34 @@ int main(int argc, char* argv[]) {
 
     strcpy(path_node, "root");
     root = insert_node(root, path_node, data);
-    
-    printf("Printing Tree\n");
-    print_tree(root);
 
     strcpy(path_node, "/root/node1");
     root = insert_node(root, path_node, data);
 
-    printf("Printing Tree\n");
-    print_tree(root);
-
     strcpy(path_node, "/root/node1/node11");
     root = insert_node(root, path_node, data);
 
-    printf("Printing Tree\n");
-    print_tree(root);
+    strcpy(path_node, "/root/node3/");
+    root = insert_node(root, path_node, data);
 
     strcpy(path_node, "/root/node1/node12");
     root = insert_node(root, path_node, data);
-
-    printf("Printing Tree\n");
-    print_tree(root);
     
     strcpy(path_node, "/root/node2/");
     root = insert_node(root, path_node, data);
-    
+
+    strcpy(path_node, "/root/node3/node31");
+    root = insert_node(root, path_node, data);
+
+    strcpy(path_node, "/root/node3/node32");
+    root = insert_node(root, path_node, data);
+
+    strcpy(path_node, "/root/node3/node32/node321");
+    root = insert_node(root, path_node, data);
+
+    strcpy(path_node, "/root/node3/node32/node322");
+    root = insert_node(root, path_node, data);
+
     printf("Printing Tree\n");
     print_tree(root);
 

@@ -19,14 +19,6 @@ int tokenize_path(char** path, char* path_dir, const char* delimiter){
 	return i;
 }
 
-void init_tree(Node* root) {
-    root->name = "root";
-    root->first_child = NULL;
-    root->left_sibling = NULL;
-    root->right_sibling = NULL;
-    root->parent = NULL;
-}
-
 Node* insert_node(Node* root, char* path_given, Data data) {
     char* path[MAX_HEIGHT];
     int path_count = 0;
@@ -96,7 +88,7 @@ Node* insert_node(Node* root, char* path_given, Data data) {
                         else {
                             // e.g path root/node1/node2/new_node
                             // root or node1 has multiple children
-                            if (strcmp(temp->name, path[i])) {
+                            if (strcmp(temp->name, path[i]) == 0) {
                                 break;
                             }
                             else {
@@ -122,9 +114,9 @@ Node* create_node(char* name) {
         return NULL;
     }
     Data data;
-    data.child_name = "";
+    data.child_name = "empty";
     data.child_type = 0;
-    new_node->name = name;
+    strcpy(new_node->name, name);
     new_node->parent = NULL;
     new_node->left_sibling = NULL;
     new_node->right_sibling = NULL;
