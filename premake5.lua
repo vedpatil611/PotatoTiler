@@ -44,7 +44,9 @@ project "PotatoTiler"
 
 	files { 
 		"%{prj.name}/src/**.h", 
-		"%{prj.name}/src/**.cpp"
+		"%{prj.name}/src/**.cpp",
+		"%{prj.name}/src/Renderer/**.h",
+		"%{prj.name}/src/Renderer/**.cpp"
 	}
 
 	filter "system:windows"
