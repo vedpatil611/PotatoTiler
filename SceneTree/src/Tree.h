@@ -23,7 +23,7 @@ public:
 
 
 void init_tree(Node* root);
-void insert_node(Node* root, char* path_given, Data data);
+Node* insert_node(Node* root, char* path_given, Data data);
 int tokenize_path(char** path, char* path_dir, const char* delimiter);
 void print_tree(Node* root);
 Node* create_node(char* name);

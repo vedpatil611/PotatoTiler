@@ -6,7 +6,8 @@ int tokenize_path(char** path, char* path_dir, const char* delimiter){
     char *token;
     token = (char *)malloc(sizeof(char) * 256);
 	int i;
-	for(i = 0, str = path_dir; ;i++, str = 0){
+    printf("\n");
+    for(i = 0, str = path_dir; ;i++, str = 0){
 		token = strtok(str, delimiter);
 		if(token == NULL){
 			break;
@@ -26,89 +27,90 @@ void init_tree(Node* root) {
     root->parent = NULL;
 }
 
-// path format /root/node1/node2/new_node
-//this means root->node1->node2->new_node
-void insert_node(Node* root, char* path_given, Data data) {
-    Node new_node;
+Node* insert_node(Node* root, char* path_given, Data data) {
     char* path[MAX_HEIGHT];
-    int path_count = tokenize_path(path, path_given, "/");
-    new_node.name = path[path_count - 1];
-    printf("%d\n", path_count);
+    int path_count = 0;
+    path_count = tokenize_path(path, path_given, "/");
+    //starting from 0
+    path_count = path_count - 1;
+    if (path_count == 0) {
+        printf("Initalizing Root, Overwrinting given path\n");
+        root = create_node("root");
+        return root;
+    }
+    Node* temp = root;
+    //printf("Name : %s\t%s\n", temp->name, path[0]);
+    int i = 0;
+    while (temp != NULL && i < path_count) {
+        if (strcmp(temp->name, path[i]) == 0) {
+            printf("path[%d] : %s\n", i, temp->name);
+            i++;
+            // If first child of path is NULL
+            if (temp->first_child == NULL) {
+                // If parent of new node to be added has no child
+                // e.g path root/node1/node2/new_node
+                // Here, first child of node2 doesn't exist
+                if (i == path_count) {
+                    temp->first_child = create_node(path[path_count]);
+                    return root;
+                }
+                // Child of intermediate parent doesn't exist
+                // e.g path root/node1/node2/new_node
+                // Here, first child of root or node1 doesn't exist which shouldn't be possible in case of correct path
+                else {
+                    printf("Incomplete path\n");
+                    return NULL;
+                }
+            }
+            // If first child of path exists go to child and append node to its siblings
+            else {
+                temp = temp->first_child;
+                printf("First Child name : %s\n", temp->name);
 
-    if (root == NULL) {
-        printf("Root not initialized\n");
-        exit(1);
-    }
-    int i;
-    Node* temp = (Node*)malloc(sizeof(Node));
-    temp = root;
-    if (temp == NULL) {
-        printf("Root node Missing\n");
-        exit(1);
-    }
-    for (i = 0; i < path_count - 1; i++) {
-        printf("%dth child %s\n", i, path[i]);
-        if (strcmp(path[i], temp->name) == 0) {
-            printf("Parent Node : %d\t%s\n", path_count - i - 1, temp->name);
-            temp = temp->first_child;
+                while (temp != NULL) {
+                    if (temp->right_sibling == NULL) {
+                        // e.g path root/node1/node2/new_node
+                        // Here node2 has one other child besides new_node
+                        if (i == path_count) {
+                            printf("sibling name : %s\n", temp->name);
+                            temp->right_sibling = create_node(path[path_count]);
+                            return root;
+                        }
+                        else {
+                            // e.g path root/node1/node2/new_node
+                            // root or node1 has single child
+                            if (strcmp(temp->name, path[i]) == 0) {
+                                break;
+                            }
+                            else {
+                                printf("Wrong path\n");
+                                return NULL;
+                            }
+                        }
+                    }
+                    // Contain multiple child
+                    else {
+                        if (i == path_count) {
+                            temp = temp->right_sibling;
+                        }
+                        else {
+                            // e.g path root/node1/node2/new_node
+                            // root or node1 has multiple children
+                            if (strcmp(temp->name, path[i])) {
+                                break;
+                            }
+                            else {
+                                temp = temp->right_sibling;
+                            }
+                        }
+                    }
+                }
+            }
         }
         else {
-            int j = 1;
-            printf("Sibling of : %s\n", temp->name);
-            if (temp && temp->right_sibling) {
-                temp = temp->right_sibling;
-            }
-            else {
-                printf("Incorrect path\n");
-                exit(1);
-            }
-            while (temp != NULL) {
-                if (strcmp(path[i], temp->name) == 0) {
-                    printf("Parent node : %d\t%s\n", path_count - i - 1, temp->name);
-                    temp = temp->first_child;
-                    break;
-                }
-                else {
-                    printf("Parent Sibling :%d\t%s\n", j, temp->name);
-                    temp = temp->right_sibling;
-                }
-            }
-        }
-    }
-    if (temp == NULL) {
-        printf("Incomplete Path\n");
-        exit(1);
-    }
-    if (strcmp(path[path_count - 1], temp->name) == 0) {
-        printf("Child of %s\n", temp->name);
-        temp->first_child = &new_node;
-        new_node.parent = temp;
-        new_node.name = temp->name;
-        new_node.left_sibling = NULL;
-        new_node.right_sibling = NULL;
-        new_node.first_child = NULL;
-        new_node.data = data;
-        return;
-    }
-    else {
-        printf("Sibling of : %s\n", temp->name);
-        temp = temp->right_sibling;
-        while (temp != NULL) {
-            if (strcmp(path[path_count - 1], temp->name) == 0) {
-                printf("Child of %s\n", temp->name);
-                temp->right_sibling = &new_node;
-                new_node.parent = temp->parent;
-                new_node.left_sibling = temp;
-                new_node.name = temp->name;
-                new_node.right_sibling = NULL;
-                new_node.first_child = NULL;
-                new_node.data = data;
-                break;
-            }
-            else {
-                printf("Sibling of : %s\n", temp->name);
-                temp = temp->right_sibling;
-            }
+            // temp->name != path[i]
+            printf("Incorrect path\n");
+            return NULL;
         }
     }
 }
@@ -132,7 +134,6 @@ Node* create_node(char* name) {
 }
 
 void print_tree(Node* root) {
-    //std::deque <Node*> queue;
     if (root == NULL) {
         printf("Empty tree\n");
         return;
