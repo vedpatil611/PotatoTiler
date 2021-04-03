@@ -113,6 +113,24 @@ void insert_node(Node* root, char* path_given, Data data) {
     }
 }
 
+Node* create_node(char* name) {
+    Node* new_node = new Node();
+    if (new_node == NULL) {
+        std::cout << "Memory Error\n";
+        return NULL;
+    }
+    Data data;
+    data.child_name = "";
+    data.child_type = 0;
+    new_node->name = name;
+    new_node->parent = NULL;
+    new_node->left_sibling = NULL;
+    new_node->right_sibling = NULL;
+    new_node->first_child = NULL;
+    new_node->data = data;
+    return new_node;
+}
+
 void print_tree(Node* root) {
     //std::deque <Node*> queue;
     if (root == NULL) {
@@ -121,15 +139,18 @@ void print_tree(Node* root) {
     }
     Node* temp;
     temp = root;
-    printf("Print Tree Output\n");
     while (temp != NULL) {
         printf("%s\n", temp->name);
         if (temp->first_child != NULL) {
             print_tree(temp->first_child);
+            temp = temp->right_sibling;
         }
         else {
             if (temp->right_sibling != NULL) {
                 temp = temp->right_sibling;
+            }
+            else{
+                return;
             }
         }
 
