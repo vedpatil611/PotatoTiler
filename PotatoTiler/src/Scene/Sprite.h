@@ -1,11 +1,13 @@
 #pragma once
 
-#include <glm/glm.hpp>
+#include "Transform.h"
 
 class Sprite
 {
 private:
-	glm::vec3 translation;
-	glm::vec3 rotation;
-	glm::vec3 scaling;
+	Transformation m_Transformation;
+public:
+	Sprite();
+	Sprite();
+	~Sprite();
 };
