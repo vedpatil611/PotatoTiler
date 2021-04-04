@@ -1,61 +1,73 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include "../../SceneTree/src/Tree.h"
 
-int main(int argc, char* argv[]) {
-    //Node* root = create_node("root");
-    //root->first_child = create_node("Node1");
-    //root->first_child->first_child = create_node("Node11");
-    //root->first_child->first_child->right_sibling = create_node("Node12");
-    //root->first_child->right_sibling = create_node("Node2");
-    //root->first_child->right_sibling->right_sibling = create_node("Node3");
-    //root->first_child->right_sibling->right_sibling->first_child = create_node("Node31");
-    //root->first_child->right_sibling->right_sibling->first_child->right_sibling = create_node("Node32");
-    //root->first_child->right_sibling->right_sibling->first_child->right_sibling->first_child = create_node("Node321");
-    //print_tree(root);
+#include <Renderer/Buffer.h>
+#include <Renderer/IndexBuffer.h>
+#include <Renderer/VertexArray.h>
+#include <Renderer/Shader.h>
 
-    Node* root = NULL;
-    //root = create_node("root");
-    //init_tree(&root);
-    Data data;
-    data.child_name = "new";
-    data.child_type = 1;
-    char path_node[256];
+int main()
+{
+    GLFWwindow* window;
+    if (!glfwInit())
+        return -1;
 
-    strcpy(path_node, "root");
-    root = insert_node(root, path_node, data);
+    window = glfwCreateWindow(640, 480, "Potato Tiler", nullptr, nullptr);
+    if (!window)
+    {
+        glfwTerminate();
+        return -1;
+    }
 
-    strcpy(path_node, "/root/node1");
-    root = insert_node(root, path_node, data);
+    glfwMakeContextCurrent(window);
 
-    strcpy(path_node, "/root/node1/node11");
-    root = insert_node(root, path_node, data);
+    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+    {
+        glfwTerminate();
+        return -1;
+    }
 
-    strcpy(path_node, "/root/node3/");
-    root = insert_node(root, path_node, data);
+    float verticies[] = 
+    {
+        -0.5f, -0.5f,
+        -0.5f,  0.5f,
+         0.5f,  0.5f,
+         0.5f, -0.5f
+    };
 
-    strcpy(path_node, "/root/node1/node12");
-    root = insert_node(root, path_node, data);
-    
-    strcpy(path_node, "/root/node2/");
-    root = insert_node(root, path_node, data);
+    unsigned short indicies[] =
+    {
+        0, 1, 2,
+        2, 3, 0
+    };
 
-    strcpy(path_node, "/root/node3/node31");
-    root = insert_node(root, path_node, data);
+    Buffer* buffer = new Buffer(verticies, 2 * 4);
+    IndexBuffer ib(indicies, 2 * 3);
+    VertexArray va;
+    va.addBuffer(0, 2, buffer);
 
-    strcpy(path_node, "/root/node3/node32");
-    root = insert_node(root, path_node, data);
+    Shader shader("shaders/basic.vert.glsl", "shaders/basic.frag.glsl");
 
-    strcpy(path_node, "/root/node3/node32/node321");
-    root = insert_node(root, path_node, data);
+    while (!glfwWindowShouldClose(window))
+    {
+        glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+        glClear(GL_COLOR_BUFFER_BIT);
 
-    strcpy(path_node, "/root/node3/node32/node322");
-    root = insert_node(root, path_node, data);
+        glfwPollEvents();
 
-    printf("Printing Tree\n");
-    print_tree(root);
+        va.bind();
+        ib.bind();
+        shader.bind();
 
+        glDrawElements(GL_TRIANGLES, ib.getCount(), GL_UNSIGNED_SHORT, nullptr);
+
+        va.unbind();
+        ib.unbind();
+        shader.unbind();
+
+        glfwSwapBuffers(window);
+    }
+
+    glfwTerminate();
     return 0;
 }
