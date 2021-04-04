@@ -5,6 +5,7 @@
 #include <Renderer/IndexBuffer.h>
 #include <Renderer/VertexArray.h>
 #include <Renderer/Shader.h>
+#include <Scene/Sprite.h>
 
 int main()
 {
@@ -35,18 +36,11 @@ int main()
          0.5f, -0.5f
     };
 
-    unsigned short indicies[] =
-    {
-        0, 1, 2,
-        2, 3, 0
-    };
-
-    Buffer* buffer = new Buffer(verticies, 2 * 4);
-    IndexBuffer ib(indicies, 2 * 3);
-    VertexArray va;
-    va.addBuffer(0, 2, buffer);
-
     Shader shader("shaders/basic.vert.glsl", "shaders/basic.frag.glsl");
+    Buffer* buffer = new Buffer(verticies, 2 * 4);
+
+    Sprite sprite({ 0.0f, 0.0f }, 0.0f, { 1.0f, 1.0 }, &shader);
+    sprite.addVertexBuffer(0, 2, buffer);
 
     while (!glfwWindowShouldClose(window))
     {
@@ -55,16 +49,8 @@ int main()
 
         glfwPollEvents();
 
-        va.bind();
-        ib.bind();
-        shader.bind();
-
-        glDrawElements(GL_TRIANGLES, ib.getCount(), GL_UNSIGNED_SHORT, nullptr);
-
-        va.unbind();
-        ib.unbind();
-        shader.unbind();
-
+        sprite.drawSprite();
+        
         glfwSwapBuffers(window);
     }
 
