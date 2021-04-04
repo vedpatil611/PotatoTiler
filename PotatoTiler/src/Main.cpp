@@ -1,48 +1,61 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include "../../SceneTree/src/Tree.h"
 
-int main()
-{
-    GLFWwindow* window;
-    if (!glfwInit())
-        return -1;
+int main(int argc, char* argv[]) {
+    //Node* root = create_node("root");
+    //root->first_child = create_node("Node1");
+    //root->first_child->first_child = create_node("Node11");
+    //root->first_child->first_child->right_sibling = create_node("Node12");
+    //root->first_child->right_sibling = create_node("Node2");
+    //root->first_child->right_sibling->right_sibling = create_node("Node3");
+    //root->first_child->right_sibling->right_sibling->first_child = create_node("Node31");
+    //root->first_child->right_sibling->right_sibling->first_child->right_sibling = create_node("Node32");
+    //root->first_child->right_sibling->right_sibling->first_child->right_sibling->first_child = create_node("Node321");
+    //print_tree(root);
 
-    window = glfwCreateWindow(640, 480, "Potato Tiler", nullptr, nullptr);
-    if (!window)
-    {
-        glfwTerminate();
-        return -1;
-    }
+    Node* root = NULL;
+    //root = create_node("root");
+    //init_tree(&root);
+    Data data;
+    data.child_name = "new";
+    data.child_type = 1;
+    char path_node[256];
 
-    glfwMakeContextCurrent(window);
+    strcpy(path_node, "root");
+    root = insert_node(root, path_node, data);
 
-    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
-    {
-        glfwTerminate();
-        return -1;
-    }
+    strcpy(path_node, "/root/node1");
+    root = insert_node(root, path_node, data);
 
-    bool d = true;
-    float r = 0.0f;
-    float g = 1.0f;
-    float b = 0.5;
-    while (!glfwWindowShouldClose(window))
-    {
-        glClearColor(r, g, b, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
-        
-        glfwPollEvents();
+    strcpy(path_node, "/root/node1/node11");
+    root = insert_node(root, path_node, data);
 
-        if (r > 1.0f) d = false;
-        else if (r < 0.0f) d = true;
+    strcpy(path_node, "/root/node3/");
+    root = insert_node(root, path_node, data);
 
-        if (d) r += 0.01;
-        else r -= 0.01f;
-        g = 1 - r;
+    strcpy(path_node, "/root/node1/node12");
+    root = insert_node(root, path_node, data);
+    
+    strcpy(path_node, "/root/node2/");
+    root = insert_node(root, path_node, data);
 
-        glfwSwapBuffers(window);
-    }
+    strcpy(path_node, "/root/node3/node31");
+    root = insert_node(root, path_node, data);
 
-    glfwTerminate();
+    strcpy(path_node, "/root/node3/node32");
+    root = insert_node(root, path_node, data);
+
+    strcpy(path_node, "/root/node3/node32/node321");
+    root = insert_node(root, path_node, data);
+
+    strcpy(path_node, "/root/node3/node32/node322");
+    root = insert_node(root, path_node, data);
+
+    printf("Printing Tree\n");
+    print_tree(root);
+
     return 0;
 }
