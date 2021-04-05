@@ -22,8 +22,8 @@ public:
 };
 
 
-Node* insert_node(Node* root, char* path_given, Data data);
-int tokenize_path(char** path, char* path_dir, const char* delimiter);
-void print_tree(Node* root);
-Node* create_node(char* name);
+Node* insertNode(Node* root, char* path_given, Data data);
+int tokenizePath(char** path, char* path_dir, const char* delimiter);
+void printTree(Node* root);
+Node* createNode(char* name);
 Node* searchNode(Node* root, char* path_given);

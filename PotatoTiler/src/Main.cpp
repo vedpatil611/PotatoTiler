@@ -23,50 +23,50 @@ int main(int argc, char* argv[]) {
     char path_node[256];
 
     strcpy(path_node, "root");
-    root = insert_node(root, path_node, data);
+    root = insertNode(root, path_node, data);
 
     strcpy(path_node, "/root/node1");
-    root = insert_node(root, path_node, data);
+    root = insertNode(root, path_node, data);
 
     strcpy(path_node, "/root/node1/node11");
-    root = insert_node(root, path_node, data);
+    root = insertNode(root, path_node, data);
 
     strcpy(path_node, "/root/node3/");
-    root = insert_node(root, path_node, data);
+    root = insertNode(root, path_node, data);
 
     strcpy(path_node, "/root/node1/node12");
-    root = insert_node(root, path_node, data);
+    root = insertNode(root, path_node, data);
 
     strcpy(path_node, "/root/node2/");
-    root = insert_node(root, path_node, data);
+    root = insertNode(root, path_node, data);
 
     strcpy(path_node, "/root/node3/node31");
-    root = insert_node(root, path_node, data);
+    root = insertNode(root, path_node, data);
 
     strcpy(path_node, "/root/node3/node32");
-    root = insert_node(root, path_node, data);
+    root = insertNode(root, path_node, data);
 
     strcpy(path_node, "/root/node3/node32/node321");
-    root = insert_node(root, path_node, data);
+    root = insertNode(root, path_node, data);
 
     strcpy(path_node, "/root/node3/node32/node322");
-    root = insert_node(root, path_node, data);
+    root = insertNode(root, path_node, data);
 
     printf("Printing Tree\n");
-    print_tree(root);
+    printTree(root);
 
     printf("\n");
 
     Node* temp;
     strcpy(path_node, "/root");
     temp = searchNode(root, path_node);
-    print_tree(temp);
+    printTree(temp);
 
     printf("\n");
 
-    strcpy(path_node, "/root/node1");
+    strcpy(path_node, "/root/node3");
     temp = searchNode(root, path_node);
-    print_tree(temp);
+    printTree(temp);
     return 0;
 }
 

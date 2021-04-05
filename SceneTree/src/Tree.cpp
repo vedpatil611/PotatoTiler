@@ -1,7 +1,7 @@
 #include "Tree.h"
 
 
-int tokenize_path(char** path, char* path_dir, const char* delimiter){
+int tokenizePath(char** path, char* path_dir, const char* delimiter){
     char* str;
     char *token;
     token = (char *)malloc(sizeof(char) * 256);
@@ -21,7 +21,7 @@ int tokenize_path(char** path, char* path_dir, const char* delimiter){
 void delete_node(Node* root, char* path_given) {
     char* path[MAX_HEIGHT];
     int path_count;
-    path_count = tokenize_path(path, path_given, "/");
+    path_count = tokenizePath(path, path_given, "/");
     //starting from 0
     path_count = path_count - 1;
     if (root == NULL) {
@@ -37,7 +37,7 @@ void delete_node(Node* root, char* path_given) {
 Node* searchNode(Node* root, char* path_given){
     char* path[MAX_HEIGHT];
     int path_count;
-    path_count = tokenize_path(path, path_given, "/");
+    path_count = tokenizePath(path, path_given, "/");
     //starting from 0
     path_count = path_count - 1;
     // Empty tree or empty path
@@ -108,15 +108,15 @@ Node* searchNode(Node* root, char* path_given){
     }
 }
 
-Node* insert_node(Node* root, char* path_given, Data data) {
+Node* insertNode(Node* root, char* path_given, Data data) {
     char* path[MAX_HEIGHT];
     int path_count = 0;
-    path_count = tokenize_path(path, path_given, "/");
+    path_count = tokenizePath(path, path_given, "/");
     //starting from 0
     path_count = path_count - 1;
     if (path_count == 0) {
         printf("Initalizing Root, Overwrinting given path\n");
-        root = create_node("root");
+        root = createNode("root");
         return root;
     }
     Node* temp = root;
@@ -132,7 +132,7 @@ Node* insert_node(Node* root, char* path_given, Data data) {
                 // e.g path root/node1/node2/new_node
                 // Here, first child of node2 doesn't exist
                 if (i == path_count) {
-                    temp->first_child = create_node(path[path_count]);
+                    temp->first_child = createNode(path[path_count]);
                     return root;
                 }
                 // Child of intermediate parent doesn't exist
@@ -154,7 +154,7 @@ Node* insert_node(Node* root, char* path_given, Data data) {
                         // Here node2 has one other child besides new_node
                         if (i == path_count) {
                             //printf("sibling name : %s\n", temp->name);
-                            temp->right_sibling = create_node(path[path_count]);
+                            temp->right_sibling = createNode(path[path_count]);
                             return root;
                         }
                         else {
@@ -196,7 +196,7 @@ Node* insert_node(Node* root, char* path_given, Data data) {
     }
 }
 
-Node* create_node(char* name) {
+Node* createNode(char* name) {
     Node* new_node = new Node();
     if (new_node == NULL) {
         std::cout << "Memory Error\n";
@@ -214,17 +214,19 @@ Node* create_node(char* name) {
     return new_node;
 }
 
-void print_tree(Node* root) {
+void printTree(Node* root) {
     if (root == NULL) {
         printf("Empty tree\n");
         return;
     }
     Node* temp;
     temp = root;
+    printf("%s\n", temp->name);
+    temp = temp->first_child;
     while (temp != NULL) {
         printf("%s\n", temp->name);
         if (temp->first_child != NULL) {
-            print_tree(temp->first_child);
+            printTree(temp->first_child);
             temp = temp->right_sibling;
         }
         else {
