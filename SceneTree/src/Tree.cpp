@@ -1,40 +1,88 @@
 #include "Tree.h"
 
 
-int tokenizePath(char** path, char* path_dir, const char* delimiter){
+int tokenizePath(char** path, char* path_dir, const char* delimiter) {
     char* str;
-    char *token;
-    token = (char *)malloc(sizeof(char) * 256);
-	int i;
-    for(i = 0, str = path_dir; ;i++, str = 0){
-		token = strtok(str, delimiter);
-		if(token == NULL){
-			break;
-		}
-		//printf("%s\t", token);
-		path[i] = token;
-	}
+    char* token;
+    token = (char*)malloc(sizeof(char) * 256);
+    int i;
+    for (i = 0, str = path_dir; ; i++, str = 0) {
+        token = strtok(str, delimiter);
+        if (token == NULL) {
+            break;
+        }
+        //printf("%s\t", token);
+        path[i] = token;
+    }
     //printf("\n");
-	return i;
+    return i;
 }
 
-void delete_node(Node* root, char* path_given) {
-    char* path[MAX_HEIGHT];
-    int path_count;
-    path_count = tokenizePath(path, path_given, "/");
-    //starting from 0
-    path_count = path_count - 1;
-    if (root == NULL) {
-        printf("Invalid Trying To Delete From Root Node\n");
+void deleteNode(Node* root) {
+    // tree path something like root->(node1->node11, node12), (node2), (node3->(node31, node32 -> node321))
+    // To check if temp is first child
+    // eg. to remove node1 we must first assign node2 or node3 as first child of root
+
+    if (root->parent != NULL) {
+        if (root->parent->first_child == root) {
+            root->parent->first_child = root->right_sibling;
+            //root->parent->first_child = NULL;
+        }
+    }
+    if (root->right_sibling != NULL) {
+        root->right_sibling->left_sibling = root->left_sibling;
+    }
+    if (root->left_sibling != NULL) {
+        root->left_sibling->right_sibling = root->right_sibling;
+    }
+    delete root;
+}
+
+void deleteTree_r(Node* root) {
+    Node* temp, * temp2;
+    temp = root;
+    if (temp == NULL) {
         return;
     }
-    if (path_count == -1) {
-        printf("Enter a path\n");
-        return;
+
+    temp = temp->first_child;
+    while (temp != NULL) {
+        // Leaf node
+        if (temp->first_child == NULL) {
+            deleteNode(temp);
+            return;
+        }
+        else {
+            // Single child
+            if (temp->first_child->right_sibling == NULL) {
+                deleteTree_r(temp->first_child);
+                break;
+            }
+            // Multiple chilren
+            else {
+                temp = temp->first_child;
+                temp2 = temp;
+                while (temp != NULL) {
+                    while (temp2->right_sibling != NULL) {
+                        temp2 = temp2->right_sibling;
+                    }
+                    deleteTree_r(temp2);
+                    temp2 = temp;
+                }
+            }
+        }
     }
 }
 
-Node* searchNode(Node* root, char* path_given){
+void deleteTree(Node* root, char* path_given) {
+    Node* temp = searchNode(root, path_given);
+    // Removes every child of temp
+    deleteTree_r(temp);
+
+    deleteNode(temp);
+}
+
+Node* searchNode(Node* root, char* path_given) {
     char* path[MAX_HEIGHT];
     int path_count;
     path_count = tokenizePath(path, path_given, "/");
@@ -94,7 +142,7 @@ Node* searchNode(Node* root, char* path_given){
                             printf("Wrong path\n");
                             return NULL;
                         }
-                        
+
                     }
 
                 }
@@ -133,6 +181,7 @@ Node* insertNode(Node* root, char* path_given, Data data) {
                 // Here, first child of node2 doesn't exist
                 if (i == path_count) {
                     temp->first_child = createNode(path[path_count]);
+                    temp->first_child->parent = temp;
                     return root;
                 }
                 // Child of intermediate parent doesn't exist
@@ -145,6 +194,7 @@ Node* insertNode(Node* root, char* path_given, Data data) {
             }
             // If first child of path exists go to child and append node to its siblings
             else {
+                Node* temp2 = temp;
                 temp = temp->first_child;
                 //printf("First Child name : %s\n", temp->name);
 
@@ -155,6 +205,8 @@ Node* insertNode(Node* root, char* path_given, Data data) {
                         if (i == path_count) {
                             //printf("sibling name : %s\n", temp->name);
                             temp->right_sibling = createNode(path[path_count]);
+                            temp->right_sibling->left_sibling = temp;
+                            temp->right_sibling->parent = temp2;
                             return root;
                         }
                         else {
@@ -215,28 +267,18 @@ Node* createNode(char* name) {
 }
 
 void printTree(Node* root) {
-    if (root == NULL) {
-        printf("Empty tree\n");
+    // tree path something like root->(node1->node11, node12), (node2), (node3->(node31, node32 -> node321))
+    Node* temp = root;
+    if (temp == NULL) {
+        //printf("Empty Tree\n");
         return;
     }
-    Node* temp;
-    temp = root;
     printf("%s\n", temp->name);
     temp = temp->first_child;
-    while (temp != NULL) {
-        printf("%s\n", temp->name);
-        if (temp->first_child != NULL) {
-            printTree(temp->first_child);
-            temp = temp->right_sibling;
-        }
-        else {
-            if (temp->right_sibling != NULL) {
-                temp = temp->right_sibling;
-            }
-            else{
-                return;
-            }
-        }
 
+    while (temp != NULL) {
+        printTree(temp);
+        temp = temp->right_sibling;
     }
+    return;
 }

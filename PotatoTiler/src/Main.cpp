@@ -67,6 +67,13 @@ int main(int argc, char* argv[]) {
     strcpy(path_node, "/root/node3");
     temp = searchNode(root, path_node);
     printTree(temp);
+
+    printf("\n");
+
+    strcpy(path_node, "/root/node3");
+    deleteTree(root, path_node);
+    printTree(root);
+
     return 0;
 }
 

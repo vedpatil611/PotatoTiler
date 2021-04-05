@@ -27,3 +27,4 @@ int tokenizePath(char** path, char* path_dir, const char* delimiter);
 void printTree(Node* root);
 Node* createNode(char* name);
 Node* searchNode(Node* root, char* path_given);
+void deleteTree(Node* root, char* path_given);
