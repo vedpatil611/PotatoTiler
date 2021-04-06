@@ -35,7 +35,8 @@ project "PotatoTiler"
 		"%{prj.name}/src/",
 		"%{IncludeDirs.GLFW}",
 		"%{IncludeDirs.GLAD}",
-		"%{IncludeDirs.GLM}"
+		"%{IncludeDirs.GLM}",
+		"%{IncludeDirs.SceneTree}"
 	}
 
 	links {
