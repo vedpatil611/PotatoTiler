@@ -14,6 +14,7 @@ public:
 	void swapBuffer();
 
 	bool shouldClose() const;
+	bool* getKeys() { return m_Keys; }
 
 	static void keyCallback(GLFWwindow* m_Window, int key, int scancode, int action, int mods);
 };

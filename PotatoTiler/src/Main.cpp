@@ -9,6 +9,7 @@
 #include <Renderer/VertexArray.h>
 #include <Renderer/Shader.h>
 #include <Scene/Sprite.h>
+#include <Camera.h>
 #include <Window.h>
 
 #include <Tree.h>
@@ -88,7 +89,10 @@ int main(int argc, char* argv[])
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+    float deltaTime = 0.0f, lastTime = 0.0f;
+
     Window* window = new Window();
+    Camera* camera = new Camera(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), -90.0f, 0.0f, 20.0f);
 
     float verticies[] =
     {
@@ -106,8 +110,14 @@ int main(int argc, char* argv[])
 
     while (!window->shouldClose())
     {
+        float now = static_cast<float>(glfwGetTime());
+        deltaTime = now - lastTime;
+        lastTime = now;
+
         window->clearBuffer();
         window->pollInput();
+
+        //camera->handleInputs(window->getKeys(), window->getXChange(), window->getYChange(), deltaTime);
 
         sprite.drawSprite();
 
