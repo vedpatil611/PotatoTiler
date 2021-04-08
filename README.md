@@ -4,4 +4,3 @@
 
 ## Features Implemented
 * Scene tree with addition, deletion and searching of nodes in a n-array tree
-* Shader Editior
