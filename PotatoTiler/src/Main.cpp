@@ -94,12 +94,20 @@ int main(int argc, char* argv[])
     Window* window = new Window();
     Camera* camera = new Camera(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), -90.0f, 0.0f, 20.0f);
 
-    float verticies[] =
+    /*float verticies[] =
     {
         -0.5f, -0.5f,
         -0.5f,  0.5f,
          0.5f,  0.5f,
          0.5f, -0.5f
+    };*/
+
+    float verticies[] =
+    {
+        -50.0f, -50.0f,
+        -50.0f,  50.0f,
+         50.0f,  50.0f,
+         50.0f, -50.0f
     };
 
     Shader shader("shaders/basic.vert.glsl", "shaders/basic.frag.glsl");
@@ -117,7 +125,10 @@ int main(int argc, char* argv[])
         window->clearBuffer();
         window->pollInput();
 
-        //camera->handleInputs(window->getKeys(), window->getXChange(), window->getYChange(), deltaTime);
+        camera->handleInputs(window->getKeys(), window->getXChange(), window->getYChange(), deltaTime);
+        shader.bind();
+        shader.setUniformMat4("uProj", window->getProjMatrix());
+        shader.setUniformMat4("uView", camera->getViewMatrix());
 
         sprite.drawSprite();
 

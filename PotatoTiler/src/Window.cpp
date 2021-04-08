@@ -26,7 +26,7 @@ Window::Window()
         throw std::runtime_error("Failed to load opengl");
     }
 
-    m_Proj = glm::ortho(-m_BufferWidth / 2, m_BufferWidth / 2, -m_BufferHeight / 2, m_BufferHeight / 2);
+    m_Proj = glm::ortho(-100.0f, 100.0f, -100.0f, 100.0f, -10.0f, 1000.0f);
 
     glfwSetWindowUserPointer(m_Window, this);
     glfwSetKeyCallback(m_Window, &Window::keyCallback);

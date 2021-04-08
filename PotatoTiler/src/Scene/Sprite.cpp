@@ -1,6 +1,7 @@
 #include "Sprite.h"
 
 #include <glad/glad.h>
+#include <glm/gtc/matrix_transform.hpp>
 #include <Renderer/Shader.h>
 #include <Renderer/VertexArray.h>
 #include <Renderer/IndexBuffer.h>
@@ -34,6 +35,13 @@ void Sprite::drawSprite()
 	m_ib->bind();
 	m_Shader->bind();
 
+	glm::vec2& t = m_Transformation.translation;
+	glm::vec2& s = m_Transformation.scale;
+	glm::mat4 model = glm::translate(glm::mat4(1.0f), { t.x, t.y, 0.0f });
+	model = glm::rotate(model, m_Transformation.rotation, { 0.0f, 0.0f, 1.0f });
+	model = glm::scale(model, { s.x, s.y, 1.0f });
+	
+	m_Shader->setUniformMat4("uModel", model);
 	glDrawElements(GL_TRIANGLES, m_ib->getCount(), GL_UNSIGNED_SHORT, nullptr);
 
 	m_va->bind();
