@@ -76,7 +76,7 @@ int main(int argc, char* argv[])
 
     printf("\n");
 
-    Node* temp;
+   /* Node* temp;
     strcpy(path_node, "/root");
     temp = searchNode(root, path_node);
     printTree(temp, 0);
@@ -91,7 +91,7 @@ int main(int argc, char* argv[])
 
     strcpy(path_node, "/root/node3");
     deleteTree(root, path_node);
-    printTree(root, 0);
+    printTree(root, 0);*/
 
     char file_name[20] = "save.dat";
     int depth = 0;
@@ -104,14 +104,6 @@ int main(int argc, char* argv[])
     Window* window = new Window();
     Camera* camera = new Camera(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), -90.0f, 0.0f, 20.0f);
     DockableWindow::init(window);
-
-    /*float verticies[] =
-    {
-        -0.5f, -0.5f,
-        -0.5f,  0.5f,
-         0.5f,  0.5f,
-         0.5f, -0.5f
-    };*/
 
     float verticies[] =
     {
