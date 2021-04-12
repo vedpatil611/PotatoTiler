@@ -1,10 +1,14 @@
+#pragma once
+
 #include <iostream>
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <deque>
+#include <fcntl.h>
 
 #define MAX_HEIGHT 10
+
 class Data {
 public:
     char* child_name;
@@ -28,3 +32,5 @@ void printTree(Node* root);
 Node* createNode(char* name);
 Node* searchNode(Node* root, char* path_given);
 void deleteTree(Node* root, char* path_given);
+void saveNode(char* file_name, Node* node);
+Node* loadNode(char* file_name);

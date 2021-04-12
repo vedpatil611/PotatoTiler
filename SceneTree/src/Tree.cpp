@@ -1,5 +1,7 @@
 #include "Tree.h"
 
+const char* NODE_FORMAT_IN = "(%[^,]s, %[^,]s, %d)";
+const char* NODE_FORMAT_OUT = "(%s, %s, %d)\n";
 
 int tokenizePath(char** path, char* path_dir, const char* delimiter) {
     char* str;
@@ -281,4 +283,30 @@ void printTree(Node* root) {
         temp = temp->right_sibling;
     }
     return;
+}
+
+void saveNode(char* file_name, Node* node) {
+    FILE* file;
+    fopen_s(&file, file_name, "w");
+    if (file == NULL) {
+        printf("File not opened, save failed\n");
+        return;
+    }
+    fprintf(file, NODE_FORMAT_OUT, node->name, node->data.child_name, node->data.child_type);
+    fclose(file);
+}
+
+Node* loadNode(char* file_name) {
+    FILE* file;
+    Node* node;
+    fopen_s(&file, file_name, "w");
+    if (file == NULL) {
+        printf("File not opened, load failed\n");
+        return NULL;
+    }
+    if (fscanf(file, NODE_FORMAT_IN, node->name, node->data.child_name, &node->data.child_type) == -1) {
+        printf("Scanf Failed\n");
+        return node;
+    }
+    fclose(file);
 }
