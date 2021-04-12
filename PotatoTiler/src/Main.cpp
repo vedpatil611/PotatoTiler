@@ -160,24 +160,6 @@ void testwindow()
 void drawSceneTree()
 {
     traverseTree(root);
-    /*if (ImGui::TreeNode("TestTree Root"))
-    {
-        if (ImGui::TreeNode("A"))
-        {
-            ImGui::Indent();
-            ImGui::Text("B");
-            ImGui::Unindent();
-            ImGui::TreePop();
-        }
-        if (ImGui::TreeNode("C"))
-        {
-            ImGui::Indent();
-            ImGui::Text("D");
-            ImGui::Unindent();
-            ImGui::TreePop();
-        }
-        ImGui::TreePop();
-    }*/
 }
 
 void traverseTree(Node* root)
