@@ -38,13 +38,9 @@ void DockableWindow::begin()
 
 void DockableWindow::draw(const char* windowName, DrawFunc func)
 {
-	begin();
-
 	ImGui::Begin(windowName);
 	func();
 	ImGui::End();
-
-	end();
 }
 
 void DockableWindow::end()
