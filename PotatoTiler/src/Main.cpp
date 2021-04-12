@@ -4,15 +4,19 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include <ImGui/imgui.h>
 #include <Renderer/Buffer.h>
 #include <Renderer/IndexBuffer.h>
 #include <Renderer/VertexArray.h>
 #include <Renderer/Shader.h>
 #include <Scene/Sprite.h>
+#include <UI/DockableWindow.h>
 #include <Camera.h>
 #include <Window.h>
 
 #include <Tree.h>
+
+void testwindow();
 
 int main(int argc, char* argv[]) 
 {
@@ -93,6 +97,7 @@ int main(int argc, char* argv[])
 
     Window* window = new Window();
     Camera* camera = new Camera(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), -90.0f, 0.0f, 20.0f);
+    DockableWindow::init(window);
 
     /*float verticies[] =
     {
@@ -132,9 +137,17 @@ int main(int argc, char* argv[])
 
         sprite.drawSprite();
 
+        DockableWindow::draw("FileBrowser", testwindow);
+
         window->swapBuffer();
     }
 
+    DockableWindow::destroy();
     glfwTerminate();
     return 0;
+}
+
+void testwindow()
+{
+    ImGui::Text("Files go here");
 }

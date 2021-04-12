@@ -21,9 +21,14 @@ public:
 
 	bool shouldClose() const;
 	bool* getKeys() { return m_Keys; }
+	inline struct GLFWwindow* getWindow() const { return m_Window; };
 
 	float getXChange();
 	float getYChange();
+
+	inline float getWidth() const { return 1280.0f; }
+	inline float getHeight() const { return 720.0f; }
+	
 	glm::mat4 getProjMatrix() const { return m_Proj; }
 
 	static void keyCallback(GLFWwindow* m_Window, int key, int scancode, int action, int mods);

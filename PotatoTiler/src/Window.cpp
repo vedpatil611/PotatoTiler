@@ -10,7 +10,7 @@ Window::Window()
     if (!glfwInit())
         throw std::runtime_error("Failed to init glfw");
 
-    m_Window = glfwCreateWindow(640, 480, "Potato Tiler", nullptr, nullptr);
+    m_Window = glfwCreateWindow(1280, 720, "Potato Tiler", nullptr, nullptr);
     if (!m_Window)
     {
         glfwTerminate();
@@ -26,7 +26,7 @@ Window::Window()
         throw std::runtime_error("Failed to load opengl");
     }
 
-    m_Proj = glm::ortho(-100.0f, 100.0f, -100.0f, 100.0f, -10.0f, 1000.0f);
+    m_Proj = glm::ortho(-640.0f, 640.0f, -360.0f, 360.0f, -10.0f, 1000.0f);
 
     glfwSetWindowUserPointer(m_Window, this);
     glfwSetKeyCallback(m_Window, &Window::keyCallback);
