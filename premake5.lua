@@ -12,12 +12,14 @@ outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
 include "Dependencies/GLFW"
 include "Dependencies/GLAD"
+include "Dependencies/ImGui"
 
 IncludeDirs = {}
 IncludeDirs["GLFW"] = "Dependencies/GLFW/include"
 IncludeDirs["GLAD"] = "Dependencies/GLAD/include"
 IncludeDirs["GLM"] = "Dependencies/glm"
 IncludeDirs["SceneTree"] = "SceneTree/src"
+IncludeDirs["ImGui"] = "Dependencies/Imgui/src"
 
 project "PotatoTiler"
 	location "PotatoTiler"
@@ -36,13 +38,15 @@ project "PotatoTiler"
 		"%{IncludeDirs.GLFW}",
 		"%{IncludeDirs.GLAD}",
 		"%{IncludeDirs.GLM}",
-		"%{IncludeDirs.SceneTree}"
+		"%{IncludeDirs.SceneTree}",
+		"%{IncludeDirs.ImGui}"
 	}
 
 	links {
 		"GLFW",
 		"GLAD",
-		"SceneTree"
+		"SceneTree",
+		"ImGui"
 	}
 
 	files { 
