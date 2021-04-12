@@ -53,7 +53,14 @@ project "PotatoTiler"
 		"%{prj.name}/src/**.h", 
 		"%{prj.name}/src/**.cpp",
 		"%{prj.name}/src/Renderer/**.h",
-		"%{prj.name}/src/Renderer/**.cpp"
+		"%{prj.name}/src/Renderer/**.cpp",
+		"%{prj.name}/src/SceneTree/**.h",
+		"%{prj.name}/src/SceneTree/**.cpp",
+		"%{prj.name}/src/UI/**.h",
+		"%{prj.name}/src/UI/**.cpp",
+		"%{prj.name}/src/utils/**.h",
+		"%{prj.name}/src/utils/**.cpp",
+		"%{prj.name}/shaders/**.glsl"
 	}
 
 	filter "system:windows"

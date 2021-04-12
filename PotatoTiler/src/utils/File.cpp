@@ -6,7 +6,7 @@ namespace Utils
 {
     std::string readFile(const char* filepath)
     {
-        FILE* file = fopen(filepath, "rt");
+        FILE* file = fopen(filepath, "r");
         fseek(file, 0, SEEK_END);
         unsigned long length = ftell(file);
         char* data = new char[length + 1];
