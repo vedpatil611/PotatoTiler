@@ -18,6 +18,9 @@
 
 void testwindow();
 void drawSceneTree();
+void traverseTree(Node* root);
+
+Node* root = NULL;
 
 int main(int argc, char* argv[]) 
 {
@@ -31,8 +34,6 @@ int main(int argc, char* argv[])
     //root->first_child->right_sibling->right_sibling->first_child->right_sibling = create_node("Node32");
     //root->first_child->right_sibling->right_sibling->first_child->right_sibling->first_child = create_node("Node321");
     //print_tree(root);
-
-    Node* root = NULL;
     //root = create_node("root");
     //init_tree(&root);
     Data data;
@@ -158,7 +159,8 @@ void testwindow()
 
 void drawSceneTree()
 {
-    if (ImGui::TreeNode("TestTree Root"))
+    traverseTree(root);
+    /*if (ImGui::TreeNode("TestTree Root"))
     {
         if (ImGui::TreeNode("A"))
         {
@@ -175,5 +177,41 @@ void drawSceneTree()
             ImGui::TreePop();
         }
         ImGui::TreePop();
+    }*/
+}
+
+void traverseTree(Node* root)
+{
+    Node* temp = root;
+    if (temp == nullptr)
+    {
+        return;
+    }
+
+    if (temp->first_child == nullptr)
+    {
+        ImGui::Text(temp->name);
+
+        temp = temp->first_child;
+    }
+    else
+    {
+        if (ImGui::TreeNode(temp->name))
+        {
+            temp = temp->first_child;
+            
+            if(temp->first_child == nullptr)
+                ImGui::Indent();
+
+            while (temp != nullptr)
+            {
+                traverseTree(temp);
+                temp = temp->right_sibling;
+                if (temp == nullptr) {
+                    ImGui::Unindent();
+                    ImGui::TreePop();
+                }
+            }
+        }
     }
 }
