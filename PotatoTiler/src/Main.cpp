@@ -72,26 +72,30 @@ int main(int argc, char* argv[])
     root = insertNode(root, path_node, data);
 
     printf("Printing Tree\n");
-    printTree(root);
+    printTree(root, 0);
 
     printf("\n");
 
     Node* temp;
     strcpy(path_node, "/root");
     temp = searchNode(root, path_node);
-    printTree(temp);
+    printTree(temp, 0);
 
     printf("\n");
 
     strcpy(path_node, "/root/node3");
     temp = searchNode(root, path_node);
-    printTree(temp);
+    printTree(temp, 0);
 
     printf("\n");
 
     strcpy(path_node, "/root/node3");
     deleteTree(root, path_node);
-    printTree(root);
+    printTree(root, 0);
+
+    char file_name[20] = "save.dat";
+    int depth = 0;
+    saveTree(file_name, root, depth);
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

@@ -28,9 +28,10 @@ public:
 
 Node* insertNode(Node* root, char* path_given, Data data);
 int tokenizePath(char** path, char* path_dir, const char* delimiter);
-void printTree(Node* root);
+void printTree(Node* root, int depth);
 Node* createNode(char* name);
 Node* searchNode(Node* root, char* path_given);
 void deleteTree(Node* root, char* path_given);
 void saveNode(char* file_name, Node* node);
 Node* loadNode(char* file_name);
+void saveTree(char* file_name, Node* root, int depth);
