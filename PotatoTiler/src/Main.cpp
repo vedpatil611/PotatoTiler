@@ -17,6 +17,7 @@
 #include <Tree.h>
 
 void testwindow();
+void drawSceneTree();
 
 int main(int argc, char* argv[]) 
 {
@@ -137,7 +138,10 @@ int main(int argc, char* argv[])
 
         sprite.drawSprite();
 
+        DockableWindow::begin();
         DockableWindow::draw("FileBrowser", testwindow);
+        DockableWindow::draw("Scene Tree", drawSceneTree);
+        DockableWindow::end();
 
         window->swapBuffer();
     }
@@ -150,4 +154,26 @@ int main(int argc, char* argv[])
 void testwindow()
 {
     ImGui::Text("Files go here");
+}
+
+void drawSceneTree()
+{
+    if (ImGui::TreeNode("TestTree Root"))
+    {
+        if (ImGui::TreeNode("A"))
+        {
+            ImGui::Indent();
+            ImGui::Text("B");
+            ImGui::Unindent();
+            ImGui::TreePop();
+        }
+        if (ImGui::TreeNode("C"))
+        {
+            ImGui::Indent();
+            ImGui::Text("D");
+            ImGui::Unindent();
+            ImGui::TreePop();
+        }
+        ImGui::TreePop();
+    }
 }
