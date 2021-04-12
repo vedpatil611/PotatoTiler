@@ -268,18 +268,21 @@ Node* createNode(char* name) {
     return new_node;
 }
 
-void printTree(Node* root) {
+void printTree(Node* root, int depth) {
     // tree path something like root->(node1->node11, node12), (node2), (node3->(node31, node32 -> node321))
     Node* temp = root;
     if (temp == NULL) {
         //printf("Empty Tree\n");
         return;
     }
+    for (int i = 0; i < depth; i++) {
+        printf("  ");
+    }
     printf("%s\n", temp->name);
     temp = temp->first_child;
 
     while (temp != NULL) {
-        printTree(temp);
+        printTree(temp, depth + 1);
         temp = temp->right_sibling;
     }
     return;
@@ -287,7 +290,7 @@ void printTree(Node* root) {
 
 void saveNode(char* file_name, Node* node) {
     FILE* file;
-    fopen_s(&file, file_name, "w");
+    fopen_s(&file, file_name, "a");
     if (file == NULL) {
         printf("File not opened, save failed\n");
         return;
@@ -298,15 +301,36 @@ void saveNode(char* file_name, Node* node) {
 
 Node* loadNode(char* file_name) {
     FILE* file;
-    Node* node;
+    Node node;
     fopen_s(&file, file_name, "w");
     if (file == NULL) {
         printf("File not opened, load failed\n");
         return NULL;
     }
-    if (fscanf(file, NODE_FORMAT_IN, node->name, node->data.child_name, &node->data.child_type) == -1) {
+    if (fscanf(file, NODE_FORMAT_IN, node.name, node.data.child_name, &node.data.child_type) == -1) {
         printf("Scanf Failed\n");
-        return node;
+        return &node;
     }
     fclose(file);
+}
+
+void saveTree(char* file_name, Node* root, int depth) {
+    // tree path something like root->(node1->node11, node12), (node2), (node3->(node31, node32 -> node321))
+    Node* temp = root;
+    if (temp == NULL) {
+        //printf("Empty Tree\n");
+        return ;
+    }
+    for (int i = 0; i < depth; i++) {
+        printf("\n");
+    }
+    saveNode(file_name, temp);
+    temp = temp->first_child;
+
+    while (temp != NULL) {
+        saveTree(file_name, temp, depth + 1);
+        temp = temp->right_sibling;
+    }
+    return;
+    
 }
