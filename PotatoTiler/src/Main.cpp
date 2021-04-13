@@ -142,13 +142,13 @@ int main(int argc, char* argv[])
         shader.setUniformMat4("uProj", window->getProjMatrix());
         shader.setUniformMat4("uView", camera->getViewMatrix());
 
-        sprite.drawSprite();
-
         DockableWindow::begin();
         DockableWindow::draw("Asset Browser", filebrowser);
         DockableWindow::draw("Scene Tree", drawSceneTree);
         DockableWindow::draw("Menu", drawMenuBar);
         DockableWindow::end();
+
+        sprite.drawSprite();
 
         window->swapBuffer();
     }
@@ -160,13 +160,13 @@ int main(int argc, char* argv[])
 
 void filebrowser()
 {
+    ImGui::Begin("Asset Browser");
     ImGui::Text("Files go here");
+    ImGui::End();
 }
 
 void drawMenuBar()
 {
-    //ImGui::Begin("Menu", nullptr, ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoTitleBar);
-
     if (ImGui::BeginMainMenuBar())
     {
         if (ImGui::BeginMenu("File"))
@@ -190,13 +190,13 @@ void drawMenuBar()
         }
         ImGui::EndMainMenuBar();
     }
-
-    //ImGui::End();
 }
 
 void drawSceneTree()
 {
+    ImGui::Begin("Scene Tree");
     traverseTree(root);
+    ImGui::End();
 }
 
 void traverseTree(Node* root)
