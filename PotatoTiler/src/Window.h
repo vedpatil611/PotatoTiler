@@ -31,6 +31,8 @@ public:
 	
 	glm::mat4 getProjMatrix() const { return m_Proj; }
 
+	void setShouldClose(bool v);
+
 	static void keyCallback(GLFWwindow* m_Window, int key, int scancode, int action, int mods);
 	static void mouseKeyCallback(GLFWwindow* window, int key, int action, int mods);
 	static void mousePositionCallback(GLFWwindow* window, double xPos, double yPos);

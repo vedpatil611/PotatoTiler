@@ -5,6 +5,7 @@
 #include <stdlib.h>
 
 #include <ImGui/imgui.h>
+#include <imfilebrowser.h>
 #include <Renderer/Buffer.h>
 #include <Renderer/IndexBuffer.h>
 #include <Renderer/VertexArray.h>
@@ -16,11 +17,16 @@
 
 #include <Tree.h>
 
-void testwindow();
+void filebrowser();
+void drawMenuBar();
 void drawSceneTree();
 void traverseTree(Node* root);
 
+ImGui::FileBrowser fileDialog;
 Node* root = NULL;
+
+Window* window;
+Camera* camera;
 
 int main(int argc, char* argv[]) 
 {
@@ -101,8 +107,8 @@ int main(int argc, char* argv[])
 
     float deltaTime = 0.0f, lastTime = 0.0f;
 
-    Window* window = new Window();
-    Camera* camera = new Camera(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), -90.0f, 0.0f, 20.0f);
+    window = new Window();
+    camera = new Camera(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), -90.0f, 0.0f, 20.0f);
     DockableWindow::init(window);
 
     float verticies[] =
@@ -118,6 +124,9 @@ int main(int argc, char* argv[])
 
     Sprite sprite({ 0.0f, 0.0f }, 0.0f, { 1.0f, 1.0 }, &shader);
     sprite.addVertexBuffer(0, 2, buffer);
+
+    fileDialog.SetTitle("Assets");
+    fileDialog.SetTypeFilters({ ".dat" });
 
     while (!window->shouldClose())
     {
@@ -136,8 +145,9 @@ int main(int argc, char* argv[])
         sprite.drawSprite();
 
         DockableWindow::begin();
-        DockableWindow::draw("FileBrowser", testwindow);
+        DockableWindow::draw("Asset Browser", filebrowser);
         DockableWindow::draw("Scene Tree", drawSceneTree);
+        DockableWindow::draw("Menu", drawMenuBar);
         DockableWindow::end();
 
         window->swapBuffer();
@@ -148,9 +158,40 @@ int main(int argc, char* argv[])
     return 0;
 }
 
-void testwindow()
+void filebrowser()
 {
     ImGui::Text("Files go here");
+}
+
+void drawMenuBar()
+{
+    //ImGui::Begin("Menu", nullptr, ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoTitleBar);
+
+    if (ImGui::BeginMainMenuBar())
+    {
+        if (ImGui::BeginMenu("File"))
+        {
+            if (ImGui::MenuItem("Open"))
+            {
+                fileDialog.Open();
+                fileDialog.Display();
+            }
+            if (ImGui::MenuItem("Save"))
+            {
+                char file_name[20] = "save.dat";
+                int depth = 0;
+                saveTree(file_name, root, depth);
+            }
+            if (ImGui::MenuItem("Exit"))
+            {
+                window->setShouldClose(true);
+            }
+            ImGui::EndMenu();
+        }
+        ImGui::EndMainMenuBar();
+    }
+
+    //ImGui::End();
 }
 
 void drawSceneTree()
@@ -168,7 +209,7 @@ void traverseTree(Node* root)
 
     if (temp->first_child == nullptr)
     {
-        ImGui::Text(temp->name);
+        ImGui::Selectable(temp->name);
 
         temp = temp->first_child;
     }

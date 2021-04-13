@@ -20,6 +20,7 @@ IncludeDirs["GLAD"] = "Dependencies/GLAD/include"
 IncludeDirs["GLM"] = "Dependencies/glm"
 IncludeDirs["SceneTree"] = "SceneTree/src"
 IncludeDirs["ImGui"] = "Dependencies/Imgui/src"
+IncludeDirs["ImGuiFileBrowser"] = "Dependencies/imgui-filebrowser"
 
 project "PotatoTiler"
 	location "PotatoTiler"
@@ -39,7 +40,8 @@ project "PotatoTiler"
 		"%{IncludeDirs.GLAD}",
 		"%{IncludeDirs.GLM}",
 		"%{IncludeDirs.SceneTree}",
-		"%{IncludeDirs.ImGui}"
+		"%{IncludeDirs.ImGui}",
+		"%{IncludeDirs.ImGuiFileBrowser}"
 	}
 
 	links {

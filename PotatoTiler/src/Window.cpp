@@ -75,6 +75,11 @@ float Window::getYChange()
     return change;
 }
 
+void Window::setShouldClose(bool v)
+{
+    glfwSetWindowShouldClose(m_Window, v);
+}
+
 void Window::keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
     Window* currentWindow = static_cast<Window*>(glfwGetWindowUserPointer(window));
