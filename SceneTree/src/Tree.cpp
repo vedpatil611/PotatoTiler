@@ -328,7 +328,9 @@ Node* loadNode(char* file_name, FILE* file) {
     Node* node;
     char* node_data[3]; // Change this according to number of data elements in file
     char line[1024];    // More space might be needed
-    fscanf(file, "(%[^)]s", line);
+    if (fscanf(file, "(%[^)]s)", line) == EOF) {
+        return NULL;
+    }
     //fscanf(file, NODE_FORMAT_IN, node.name, node.data.child_name, &node.data.child_type);
     int n = tokenizePath(node_data, line, ", ");
     if (n != 3) {
@@ -346,7 +348,7 @@ Node* loadNode(char* file_name, FILE* file) {
 
 Node* loadTree(char* file_name) {
     FILE* file;
-    char* arg[MAX_HEIGHT];
+    char arg[MAX_HEIGHT][MAX_NODE_NAME_LEN];
     char path[MAX_NODE_NAME_LEN];
     char ch;
     int depth = 0;
@@ -358,19 +360,25 @@ Node* loadTree(char* file_name) {
     Node* root, * temp;
     root = nullptr;
     while (fscanf(file, "%c", &ch) != EOF) {
-        if (ch == '<') {
+        if (ch == '>') {
             depth++;
         }
-        else {
+        else if (ch == '(') {
             strcpy(path, "");
             fseek(file, -1, SEEK_CUR);
             for (int i = 0; i < depth; i++) {
                 strcat(path, arg[i]);
+                strcat(path, "/");
             }
             temp = loadNode(file_name, file);
             if (temp != NULL) {
                 strcat(path, temp->name);
                 root = insertNode(root, path, temp->data);
+                strcpy(arg[depth], temp->name);
+                depth = 0;
+            }
+            else {
+                break;
             }
         }
     }

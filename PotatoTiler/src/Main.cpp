@@ -64,18 +64,10 @@ Node* createTree() {
 int main(int argc, char* argv[])
 {
     char file_name[20] = "save.dat";
-    int depth = 0;
-    //    Node* root = createTree();
-    saveTree(file_name, root);
+    //Node* root = createTree();
+    //saveTree(file_name, root);
     root = loadTree(file_name);
-    FILE* file;
-    fopen_s(&file, file_name, "r");
-    if (file == NULL) {
-        printf("File not opened, load failed\n");
-        return NULL;
-    }
-    //root = loadNode(file_name, file);
-    fclose(file);
+
     printTree(root, 0);
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
