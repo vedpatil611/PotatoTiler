@@ -288,49 +288,92 @@ void printTree(Node* root, int depth) {
     return;
 }
 
-void saveNode(char* file_name, Node* node) {
-    FILE* file;
-    fopen_s(&file, file_name, "a");
-    if (file == NULL) {
-        printf("File not opened, save failed\n");
-        return;
-    }
+// Only to be called in saveTree
+void saveNode(char* file_name, Node* node, FILE* file) {
     fprintf(file, NODE_FORMAT_OUT, node->name, node->data.child_name, node->data.child_type);
-    fclose(file);
 }
 
-Node* loadNode(char* file_name) {
-    FILE* file;
-    Node node;
-    fopen_s(&file, file_name, "w");
-    if (file == NULL) {
-        printf("File not opened, load failed\n");
-        return NULL;
-    }
-    if (fscanf(file, NODE_FORMAT_IN, node.name, node.data.child_name, &node.data.child_type) == -1) {
-        printf("Scanf Failed\n");
-        return &node;
-    }
-    fclose(file);
-}
-
-void saveTree(char* file_name, Node* root, int depth) {
+void saveTree_r(char* file_name, Node* root, int depth, FILE* file) {
     // tree path something like root->(node1->node11, node12), (node2), (node3->(node31, node32 -> node321))
     Node* temp = root;
     if (temp == NULL) {
         //printf("Empty Tree\n");
-        return ;
+        return;
     }
     for (int i = 0; i < depth; i++) {
-        printf("\n");
+        fprintf(file, ">");
     }
-    saveNode(file_name, temp);
+    saveNode(file_name, temp, file);
     temp = temp->first_child;
 
     while (temp != NULL) {
-        saveTree(file_name, temp, depth + 1);
+        saveTree_r(file_name, temp, depth + 1, file);
         temp = temp->right_sibling;
     }
     return;
-    
+}
+
+void saveTree(char* file_name, Node* root) {
+    FILE* file;
+    fopen_s(&file, file_name, "w+");
+    if (file == NULL) {
+        printf("File not opened, save failed\n");
+        return;
+    }
+    saveTree_r(file_name, root, 0, file);
+    fclose(file);
+}
+
+Node* loadNode(char* file_name, FILE* file) {
+    Node* node;
+    char* node_data[3]; // Change this according to number of data elements in file
+    char line[1024];    // More space might be needed
+    fscanf(file, "(%[^)]s", line);
+    //fscanf(file, NODE_FORMAT_IN, node.name, node.data.child_name, &node.data.child_type);
+    int n = tokenizePath(node_data, line, ", ");
+    if (n != 3) {
+        if (n != 0) {
+            printf("Incorrect format or Corrupt data\n");
+        }
+        return NULL;
+    }
+    node = createNode(node_data[0]);
+    strncpy(node->name, node_data[0], strlen(node_data[0]));
+    //strncpy(node->data.child_name, node_data[1], strlen(node_data[1]));
+    node->data.child_type = atoi(node_data[2]);
+    return node;
+}
+
+Node* loadTree(char* file_name) {
+    FILE* file;
+    char* arg[MAX_HEIGHT];
+    char path[MAX_NODE_NAME_LEN];
+    char ch;
+    int depth = 0;
+    fopen_s(&file, file_name, "r");
+    if (file == NULL) {
+        printf("File not opened, load failed\n");
+        return NULL;
+    }
+    Node* root, * temp;
+    root = nullptr;
+    while (fscanf(file, "%c", &ch) != EOF) {
+        if (ch == '<') {
+            depth++;
+        }
+        else {
+            strcpy(path, "");
+            fseek(file, -1, SEEK_CUR);
+            for (int i = 0; i < depth; i++) {
+                strcat(path, arg[i]);
+            }
+            temp = loadNode(file_name, file);
+            if (temp != NULL) {
+                strcat(path, temp->name);
+                root = insertNode(root, path, temp->data);
+            }
+        }
+    }
+    fclose(file);
+    return root;
 }
