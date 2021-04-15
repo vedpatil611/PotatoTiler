@@ -6,6 +6,7 @@
 #include <stdlib.h>
 
 #include <ImGui/imgui.h>
+#include <imfilebrowser.h>
 #include <Renderer/Buffer.h>
 #include <Renderer/IndexBuffer.h>
 #include <Renderer/VertexArray.h>
@@ -19,9 +20,13 @@
 
 void testwindow();
 void drawSceneTree();
+void drawMenuBar();
 void traverseTree(Node* root);
 
+ImGui::FileBrowser fileDialog;
 Node* root = NULL;
+Window* window;
+Camera* camera;
 
 Node* createTree() {
     Data data;
@@ -75,8 +80,8 @@ int main(int argc, char* argv[])
 
     float deltaTime = 0.0f, lastTime = 0.0f;
 
-    Window* window = new Window();
-    Camera* camera = new Camera(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), -90.0f, 0.0f, 20.0f);
+    window = new Window();
+    camera = new Camera(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), -90.0f, 0.0f, 20.0f);
     DockableWindow::init(window);
 
     float verticies[] =
@@ -107,12 +112,13 @@ int main(int argc, char* argv[])
         shader.setUniformMat4("uProj", window->getProjMatrix());
         shader.setUniformMat4("uView", camera->getViewMatrix());
 
-        sprite.drawSprite();
-
         DockableWindow::begin();
-        DockableWindow::draw("FileBrowser", testwindow);
+        DockableWindow::draw("File Browser", testwindow);
         DockableWindow::draw("Scene Tree", drawSceneTree);
+        DockableWindow::draw("Main Menu", drawMenuBar);
         DockableWindow::end();
+
+        sprite.drawSprite();
 
         window->swapBuffer();
     }
@@ -138,7 +144,9 @@ void testwindow()
 
 void drawSceneTree()
 {
+    ImGui::Begin("Scene Tree");
     traverseTree(root);
+    ImGui::End();
 }
 
 void traverseTree(Node* root)
@@ -174,5 +182,32 @@ void traverseTree(Node* root)
                 }
             }
         }
+    }
+}
+
+void drawMenuBar()
+{
+    if (ImGui::BeginMainMenuBar())
+    {
+        if (ImGui::BeginMenu("File"))
+        {
+            if (ImGui::MenuItem("Open"))
+            {
+                fileDialog.Open();
+                fileDialog.Display();
+            }
+            if (ImGui::MenuItem("Save"))
+            {
+                char file_name[20] = "save.dat";
+                int depth = 0;
+                saveTree(file_name, root);
+            }
+            if (ImGui::MenuItem("Exit"))
+            {
+                window->setShouldClose(true);
+            }
+            ImGui::EndMenu();
+        }
+        ImGui::EndMainMenuBar();
     }
 }
