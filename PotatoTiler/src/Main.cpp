@@ -1,6 +1,7 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
+#include <filesystem>
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -161,7 +162,14 @@ int main(int argc, char* argv[])
 void filebrowser()
 {
     ImGui::Begin("Asset Browser");
-    ImGui::Text("Files go here");
+    const char* path = ".\\";
+
+    for (auto& entry : std::filesystem::recursive_directory_iterator(path))
+    {
+        auto t = entry.path();
+        ImGui::Text(t.u8string().c_str());
+    }
+
     ImGui::End();
 }
 
