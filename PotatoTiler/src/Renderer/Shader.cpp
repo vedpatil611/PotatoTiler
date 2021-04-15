@@ -18,6 +18,16 @@ Shader::~Shader()
 	glDeleteProgram(m_ShaderID);
 }
 
+void Shader::setUniform1i(const char* uniformName, int value)
+{
+	glUniform1i(getUniformLocation(uniformName), value);
+}
+
+void Shader::setUniform1f(const char* uniformName, float value)
+{
+	glUniform1f(getUniformLocation(uniformName), value);
+}
+
 void Shader::setUniformMat4(const char* uniformName, const glm::mat4& mat)
 {
 	glUniformMatrix4fv(getUniformLocation(uniformName), 1, false, &mat[0][0]);

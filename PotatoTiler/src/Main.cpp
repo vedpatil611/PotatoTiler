@@ -11,6 +11,7 @@
 #include <Renderer/IndexBuffer.h>
 #include <Renderer/VertexArray.h>
 #include <Renderer/Shader.h>
+#include <Renderer/Texture.h>
 #include <Scene/Sprite.h>
 #include <UI/DockableWindow.h>
 #include <Camera.h>
@@ -87,17 +88,26 @@ int main(int argc, char* argv[])
 
     float verticies[] =
     {
-        -50.0f, -50.0f,
-        -50.0f,  50.0f,
-         50.0f,  50.0f,
-         50.0f, -50.0f
+        -50.0f, -50.0f, 
+        -50.0f,  50.0f, 
+         50.0f,  50.0f, 
+         50.0f, -50.0f, 
+    };
+
+    float texCoords[] =
+    {
+        0.0f, 0.0f,
+        0.0f, 1.0f,
+        1.0f, 1.0f,
+        1.0f, 0.0f,
     };
 
     Shader shader("shaders/basic.vert.glsl", "shaders/basic.frag.glsl");
-    Buffer* buffer = new Buffer(verticies, 2 * 4);
+    Texture texture("assets/texture/Meow.png");
 
-    Sprite sprite({ 0.0f, 0.0f }, 0.0f, { 1.0f, 1.0 }, &shader);
-    sprite.addVertexBuffer(0, 2, buffer);
+    Sprite sprite({ 0.0f, 0.0f }, 0.0f, { 1.0f, 1.0 }, &shader, &texture);
+    sprite.addVertexBuffer(0, 2, new Buffer(verticies, 2 * 4));
+    sprite.addVertexBuffer(1, 2, new Buffer(texCoords, 2 * 4));
 
     while (!window->shouldClose())
     {

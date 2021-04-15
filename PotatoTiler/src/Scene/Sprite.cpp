@@ -3,11 +3,12 @@
 #include <glad/glad.h>
 #include <glm/gtc/matrix_transform.hpp>
 #include <Renderer/Shader.h>
+#include <Renderer/Texture.h>
 #include <Renderer/VertexArray.h>
 #include <Renderer/IndexBuffer.h>
 
-Sprite::Sprite(glm::vec2 pos, float rotation, glm::vec2 scale, Shader* shader)
-	: m_Transformation(pos, rotation, scale), m_Shader(shader)
+Sprite::Sprite(glm::vec2 pos, float rotation, glm::vec2 scale, Shader* shader, Texture* texture)
+	: m_Transformation(pos, rotation, scale), m_Shader(shader), m_Texture(texture)
 {
 	m_va = new VertexArray();
 
@@ -34,6 +35,16 @@ void Sprite::drawSprite()
 	m_va->bind();
 	m_ib->bind();
 	m_Shader->bind();
+	if (m_Texture) 
+	{
+		m_Shader->setUniform1i("uHasTex", true);
+		m_Shader->setUniform1i("uTex", 0);
+		m_Texture->bind();
+	}
+	else
+	{
+		m_Shader->setUniform1i("uHasTex", false);
+	}
 
 	glm::vec2& t = m_Transformation.translation;
 	glm::vec2& s = m_Transformation.scale;
@@ -44,7 +55,8 @@ void Sprite::drawSprite()
 	m_Shader->setUniformMat4("uModel", model);
 	glDrawElements(GL_TRIANGLES, m_ib->getCount(), GL_UNSIGNED_SHORT, nullptr);
 
-	m_va->bind();
-	m_ib->bind();
-	m_Shader->bind();
+	if(m_Texture) m_Texture->unbind();
+	m_va->unbind();
+	m_ib->unbind();
+	m_Shader->unbind();
 }
