@@ -113,13 +113,13 @@ int main(int argc, char* argv[])
         shader.setUniformMat4("uProj", window->getProjMatrix());
         shader.setUniformMat4("uView", camera->getViewMatrix());
 
+        sprite.drawSprite();
+
         DockableWindow::begin();
         DockableWindow::draw("File Browser", drawAssetBrowser);
         DockableWindow::draw("Scene Tree", drawSceneTree);
         DockableWindow::draw("Main Menu", drawMenuBar);
         DockableWindow::end();
-
-        sprite.drawSprite();
 
         window->swapBuffer();
     }
