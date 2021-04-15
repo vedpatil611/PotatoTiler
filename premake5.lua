@@ -41,7 +41,8 @@ project "PotatoTiler"
 		"%{IncludeDirs.GLM}",
 		"%{IncludeDirs.SceneTree}",
 		"%{IncludeDirs.ImGui}",
-		"%{IncludeDirs.ImGuiFileBrowser}"
+		"%{IncludeDirs.ImGuiFileBrowser}",
+		"%{prj.name}/src/vendors"
 	}
 
 	links {
@@ -62,6 +63,8 @@ project "PotatoTiler"
 		"%{prj.name}/src/UI/**.cpp",
 		"%{prj.name}/src/utils/**.h",
 		"%{prj.name}/src/utils/**.cpp",
+		"%{prj.name}/src/vendors/stb_image/**.h",
+		"%{prj.name}/src/vendors/stb_image/**.cpp",
 		"%{prj.name}/shaders/**.glsl"
 	}
 
