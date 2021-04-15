@@ -18,7 +18,7 @@
 
 #include <Tree.h>
 
-void testwindow();
+void drawAssetBrowser();
 void drawSceneTree();
 void drawMenuBar();
 void traverseTree(Node* root);
@@ -70,8 +70,9 @@ Node* createTree() {
 int main(int argc, char* argv[])
 {
     char file_name[20] = "save.dat";
-    //Node* root = createTree();
-    //saveTree(file_name, root);
+    root = createTree();
+    saveTree(file_name, root);
+    delete root;
     root = loadTree(file_name);
 
     printTree(root, 0);
@@ -113,7 +114,7 @@ int main(int argc, char* argv[])
         shader.setUniformMat4("uView", camera->getViewMatrix());
 
         DockableWindow::begin();
-        DockableWindow::draw("File Browser", testwindow);
+        DockableWindow::draw("File Browser", drawAssetBrowser);
         DockableWindow::draw("Scene Tree", drawSceneTree);
         DockableWindow::draw("Main Menu", drawMenuBar);
         DockableWindow::end();
@@ -128,17 +129,36 @@ int main(int argc, char* argv[])
     return 0;
 }
 
-void testwindow()
+void getDirectoryTree(char* path)
 {
-    ImGui::Begin("Asset Browser");
-    const char* path = ".\\";
-
-    for (auto& entry : std::filesystem::recursive_directory_iterator(path))
+    for (auto& entry : std::filesystem::directory_iterator(path))
     {
         auto t = entry.path();
-        ImGui::Text(t.u8string().c_str());
+        if (entry.is_directory()) 
+        {
+            std::string s = t.string();
+            char newPath[MAX_PATH];
+            strcpy(newPath, s.c_str());
+            if (ImGui::TreeNode(t.relative_path().filename().string().c_str()))
+            {
+                ImGui::Indent();
+                getDirectoryTree(newPath);
+                ImGui::Unindent();
+                ImGui::TreePop();
+            }
+        }
+        else
+        {
+            ImGui::Text(t.relative_path().filename().string().c_str());
+        }
     }
+}
 
+void drawAssetBrowser()
+{
+    ImGui::Begin("Asset Browser");
+    char* path = ".\\";
+    getDirectoryTree(path);
     ImGui::End();
 }
 
@@ -211,3 +231,4 @@ void drawMenuBar()
         ImGui::EndMainMenuBar();
     }
 }
+
