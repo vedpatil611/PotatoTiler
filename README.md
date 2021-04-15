@@ -4,3 +4,5 @@
 
 ## Features Implemented
 * Scene tree with addition, deletion and searching of nodes in a n-array tree
+* Sprite class with support for texture and shader with uniform support
+* Asset browser (work in progress)
