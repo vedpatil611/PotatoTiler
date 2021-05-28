@@ -19,7 +19,7 @@ IncludeDirs["GLFW"] = "Dependencies/GLFW/include"
 IncludeDirs["GLAD"] = "Dependencies/GLAD/include"
 IncludeDirs["GLM"] = "Dependencies/glm"
 IncludeDirs["SceneTree"] = "SceneTree/src"
-IncludeDirs["ImGui"] = "Dependencies/Imgui/src"
+IncludeDirs["ImGui"] = "Dependencies/ImGui/src"
 IncludeDirs["ImGuiFileBrowser"] = "Dependencies/imgui-filebrowser"
 
 project "PotatoTiler"
@@ -45,6 +45,9 @@ project "PotatoTiler"
 		"%{prj.name}/src/vendors"
 	}
 
+    defines {
+        "IMGUI_IMPL_OPENGL_LOADER_GLAD"
+    }
 	links {
 		"GLFW",
 		"GLAD",
@@ -70,8 +73,19 @@ project "PotatoTiler"
 
 	filter "system:windows"
 		defines {
-			"_CRT_SECURE_NO_WARNINGS"
+			"_CRT_SECURE_NO_WARNINGS",
+            "OS_WINDOWS"
 		}
+
+    filter "system:linux"
+        defines {
+            "OS_LINUX",
+        }
+        links {
+            "dl",
+            "pthread",
+            "GL"
+        }
 
 	filter "configurations:Debug"
 		defines { "DEBUG" }
@@ -106,10 +120,16 @@ project "SceneTree"
 
 	filter "system:windows"
 		defines {
-			"_CRT_SECURE_NO_WARNINGS"
+			"_CRT_SECURE_NO_WARNINGS",
+            "OS_WINDOWS"
 		}
 
-	filter "configurations:Debug"
+    filter "system:linux"
+	    defines {
+            "OS_LINUX"
+        }
+
+    filter "configurations:Debug"
 		defines { "DEBUG" }
 		symbols "On"
 

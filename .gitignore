@@ -8,3 +8,7 @@ intermediate/
 *.vcxproj
 *.user
 *.filters
+
+.ccls
+compile_commands.json
+

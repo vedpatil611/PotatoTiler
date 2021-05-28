@@ -19,6 +19,10 @@
 
 #include <Tree.h>
 
+#ifdef OS_LINUX
+    #define MAX_PATH 256
+#endif
+
 void drawAssetBrowser();
 void drawSceneTree();
 void drawMenuBar();
@@ -167,7 +171,11 @@ void getDirectoryTree(char* path)
 void drawAssetBrowser()
 {
     ImGui::Begin("Asset Browser");
+#ifdef OS_WINDOW
     char* path = ".\\";
+#elif OS_LINUX
+    char* path = "./";
+#endif
     getDirectoryTree(path);
     ImGui::End();
 }

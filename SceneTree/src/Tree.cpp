@@ -315,7 +315,11 @@ void saveTree_r(char* file_name, Node* root, int depth, FILE* file) {
 
 void saveTree(char* file_name, Node* root) {
     FILE* file;
+#ifdef OS_WINDOWS
     fopen_s(&file, file_name, "w+");
+#elif OS_LINUX
+    file = fopen64(file_name, "w+");
+#endif
     if (file == NULL) {
         printf("File not opened, save failed\n");
         return;
@@ -352,7 +356,13 @@ Node* loadTree(char* file_name) {
     char path[MAX_NODE_NAME_LEN];
     char ch;
     int depth = 0;
+
+#ifdef OS_WINDOWS
     fopen_s(&file, file_name, "r");
+#elif OS_LINUX
+    file = fopen64(file_name, "r");
+#endif
+
     if (file == NULL) {
         printf("File not opened, load failed\n");
         return NULL;
