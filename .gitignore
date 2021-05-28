@@ -9,6 +9,8 @@ intermediate/
 *.user
 *.filters
 
+Makefile
+
 .ccls
 compile_commands.json
 
