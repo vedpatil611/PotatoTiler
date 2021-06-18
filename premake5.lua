@@ -86,6 +86,10 @@ project "PotatoTiler"
             "pthread",
             "GL"
         }
+        postbuildcommands {
+            ("cp -rf ./assets/ ../bin/" .. outputdir .. "/%{prj.name}/"),
+            ("cp -rf ./shaders/ ../bin/" .. outputdir .. "/%{prj.name}/")
+        }
 
 	filter "configurations:Debug"
 		defines { "DEBUG" }
