@@ -12,6 +12,7 @@
 #include <Renderer/VertexArray.h>
 #include <Renderer/Shader.h>
 #include <Renderer/Texture.h>
+#include <Renderer/TextureArray.h>
 #include <Scene/Sprite.h>
 #include <UI/DockableWindow.h>
 #include <Camera.h>
@@ -32,6 +33,8 @@ ImGui::FileBrowser fileDialog;
 Node* root = NULL;
 Window* window;
 Camera* camera;
+
+TextureArray texArray;
 
 Node* createTree() {
     Data data;
