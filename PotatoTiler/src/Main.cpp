@@ -93,6 +93,8 @@ int main(int argc, char* argv[])
     camera = new Camera(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), -90.0f, 0.0f, 20.0f);
     DockableWindow::init(window);
 
+    texArray.pushTextureFromPathRecursive("./");
+
     float verticies[] =
     {
         -50.0f, -50.0f, 
@@ -200,7 +202,7 @@ void traverseTree(Node* root)
 
     if (temp->first_child == nullptr)
     {
-        ImGui::Text(temp->name);
+        ImGui::Text("%s", temp->name);
 
         temp = temp->first_child;
     }

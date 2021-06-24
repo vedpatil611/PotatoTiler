@@ -10,5 +10,7 @@ public:
 	~TextureArray();
 
 	void pushTexture(Texture* tex);
+	void pushTextureFromPath(const char* path);
+	void pushTextureFromPathRecursive(const char* path);
 };
 
