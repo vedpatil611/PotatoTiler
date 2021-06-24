@@ -143,7 +143,7 @@ int main(int argc, char* argv[])
     return 0;
 }
 
-void getDirectoryTree(char* path)
+void getDirectoryTree(const char* path)
 {
     for (auto& entry : std::filesystem::directory_iterator(path))
     {
@@ -163,7 +163,7 @@ void getDirectoryTree(char* path)
         }
         else
         {
-            ImGui::Text(t.relative_path().filename().string().c_str());
+            ImGui::Text("%s" ,t.relative_path().filename().string().c_str());
         }
     }
 }
@@ -174,7 +174,7 @@ void drawAssetBrowser()
 #ifdef OS_WINDOW
     char* path = ".\\";
 #elif OS_LINUX
-    char* path = "./";
+    char const* path = "./";
 #endif
     getDirectoryTree(path);
     ImGui::End();

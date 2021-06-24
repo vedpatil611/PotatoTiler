@@ -3,12 +3,12 @@
 const char* NODE_FORMAT_IN = "(%[^,]s, %[^,]s, %d)";
 const char* NODE_FORMAT_OUT = "(%s, %s, %d)\n";
 
-int tokenizePath(char** path, char* path_dir, const char* delimiter) {
+int tokenizePath(char** path, char const* path_dir, const char* delimiter) {
     char* str;
     char* token;
     token = (char*)malloc(sizeof(char) * 256);
     int i;
-    for (i = 0, str = path_dir; ; i++, str = 0) {
+    for (i = 0, str = strdup(path_dir); ; i++, str = 0) {
         token = strtok(str, delimiter);
         if (token == NULL) {
             break;
@@ -84,7 +84,7 @@ void deleteTree(Node* root, char* path_given) {
     deleteNode(temp);
 }
 
-Node* searchNode(Node* root, char* path_given) {
+Node* searchNode(Node* root, char const* path_given) {
     char* path[MAX_HEIGHT];
     int path_count;
     path_count = tokenizePath(path, path_given, "/");
@@ -144,12 +144,9 @@ Node* searchNode(Node* root, char* path_given) {
                             printf("Wrong path\n");
                             return NULL;
                         }
-
                     }
-
                 }
             }
-
         }
         else {
             printf("Path not found\n");
@@ -158,7 +155,7 @@ Node* searchNode(Node* root, char* path_given) {
     }
 }
 
-Node* insertNode(Node* root, char* path_given, Data data) {
+Node* insertNode(Node* root, char const* path_given, Data data) {
     char* path[MAX_HEIGHT];
     int path_count = 0;
     path_count = tokenizePath(path, path_given, "/");
@@ -250,7 +247,7 @@ Node* insertNode(Node* root, char* path_given, Data data) {
     }
 }
 
-Node* createNode(char* name) {
+Node* createNode(char const* name) {
     Node* new_node = new Node();
     if (new_node == NULL) {
         std::cout << "Memory Error\n";

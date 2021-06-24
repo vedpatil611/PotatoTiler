@@ -11,7 +11,7 @@
 
 class Data {
 public:
-    char* child_name;
+    char const* child_name;
     int child_type;
 };
 
@@ -26,11 +26,11 @@ public:
 };
 
 
-Node* insertNode(Node* root, char* path_given, Data data);
-int tokenizePath(char** path, char* path_dir, const char* delimiter);
+Node* insertNode(Node* root, char const* path_given, Data data);
+int tokenizePath(char** path, char const* path_dir, const char* delimiter);
 void printTree(Node* root, int depth);
-Node* createNode(char* name);
-Node* searchNode(Node* root, char* path_given);
+Node* createNode(char const* name);
+Node* searchNode(Node* root, char const* path_given);
 void deleteTree(Node* root, char* path_given);
 void saveNode(char* file_name, Node* node, FILE* file);
 Node* loadNode(char* file_name, FILE* file);
